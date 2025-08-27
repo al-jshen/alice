@@ -1,6 +1,6 @@
 # Alice: An Interpretable Neural Architecture for Generalization in Substitution Ciphers
 
-![ALICE](alice.png)
+![ALICE](aliceimg.png)
 
 Alice is a transformer-based neural network designed to solve cryptograms.
 
