@@ -1,0 +1,24 @@
+[project]
+name = "alice"
+version = "0.1.0"
+description = "ALICE: An Interpretable Neural Architecture for Generalization in Substitution Ciphers"
+authors = [
+    {name = "Jeff Shen",email = "shenjeff@princeton.edu>, Lindsay M. Smith <lindsay.smith@princeton.edu"}
+]
+license = {text = "Apache-2.0"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "torch",
+    "numpy",
+    "scipy",
+    "datasets",
+    "omegaconf",
+    "tqdm",
+    "wandb",
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
