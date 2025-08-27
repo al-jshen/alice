@@ -32,7 +32,7 @@ python alice/train.py --config configs/my_config.yaml
 
 ### Pretrained Models
 
-We release the checkpoints for various pretrained models in [`checkpoints/`](checkpoints/).
+We release the checkpoints for various pretrained models [at this link](https://users.flatironinstitute.org/~jshen/alice/).
 
 You will need to instantiate the model with the same configuration used during training.
 
