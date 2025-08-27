@@ -3,6 +3,7 @@
 ![ALICE](aliceimg.png)
 
 Alice is a transformer-based neural network designed to solve cryptograms.
+(an **A**rchitecture for **L**earning **I**nterpretable **C**ryptogram d**E**cipherment)
 
 ## Installation
 
