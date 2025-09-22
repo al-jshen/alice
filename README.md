@@ -32,6 +32,11 @@ cp configs/alice_base.yaml configs/my_config.yaml
 python alice/train.py --config configs/my_config.yaml
 ```
 
+### Linear/non-linear probing 
+
+To train linear/non-linear probes on top of frozen model representations, run the included `alice/train_probes.py` script.
+There is an example config named `configs/probe_base_linear.yaml` that you can modify.
+
 ### Pretrained Models
 
 We release the checkpoints for various pretrained models [at this link](https://users.flatironinstitute.org/~jshen/alice/).
@@ -59,12 +64,6 @@ dynamic_embeddings: true
 embedding_n_layer: 2
 embedding_n_head: 4
 ```
-
-### Linear/non-linear probing 
-
-To train linear/non-linear probes on top of frozen model representations, run the included `alice/train_probes.py` script.
-There is an example config named `configs/probe_base_linear.yaml` that you can modify.
-
 
 ## License
 
