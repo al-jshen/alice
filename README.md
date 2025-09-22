@@ -60,6 +60,12 @@ embedding_n_layer: 2
 embedding_n_head: 4
 ```
 
+### Linear/non-linear probing 
+
+To train linear/non-linear probes on top of frozen model representations, run the included `train_probes.py` script.
+There is an example config named `configs/probe_base_linear.yaml` that you can modify.
+
+
 ## License
 
 This project is licensed under the Apache-2.0 License. See [LICENSE](LICENSE) for details.
