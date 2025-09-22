@@ -11,4 +11,4 @@ wandb_project: <wandb_project>
 wandb_group: <wandb_group>
 wandb_notes: <wandb_notes>
 wandb_log_freq: 100
-save_dir: <checkpoint_dir_for_probe>
+save_dir: checkpoint_probes

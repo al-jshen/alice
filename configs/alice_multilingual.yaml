@@ -1,6 +1,6 @@
 # data
-dataset: j-shen/gutenberg-multilingual-256
-extra_chars: '.,!?-;:''"'
+dataset: j-shen/multilingual-256-25k-en_fr_de_it_la_pt_es
+extra_chars: ''
 min_length: 200
 max_length: 300
 cipher_type: cryptogram
@@ -49,11 +49,11 @@ bf16: true
 
 # logging
 wandb_enabled: true
-wandb_entity: <your-wandb-username>
-wandb_project: <your-project-name>
-wandb_group: cryptogram_multilingual
+wandb_entity: <your_wandb_entity>
+wandb_project: <your_wandb_project>
+wandb_group: <your_wandb_group>
 wandb_notes: ""
 wandb_log_freq: 100
 log_lr: true
 save_freq: 2500
-checkpoint_dir: checkpoints/
+checkpoint_dir: checkpoints
