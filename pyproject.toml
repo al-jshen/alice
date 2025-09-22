@@ -16,6 +16,7 @@ dependencies = [
     "omegaconf",
     "tqdm",
     "wandb",
+    "einops",
 ]
 
 
