@@ -3,8 +3,7 @@ name = "alice"
 version = "0.1.0"
 description = "ALICE: An Interpretable Neural Architecture for Generalization in Substitution Ciphers"
 authors = [
-    {name = "Jeff Shen", email = "shenjeff@princeton.edu"},
-    {name = "Lindsay M. Smith", email = "lindsay.smith@princeton.edu"}
+    XXXX
 ]
 license = {text = "Apache-2.0"}
 readme = "README.md"
