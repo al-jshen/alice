@@ -1,0 +1,14 @@
+full_wandb_id: <wandb_id_of_base_model_run>
+checkpoint_path: <path_to_base_model_checkpoint>
+probe_type: "linear" # linear or mlp
+probe_hidden_dim: null # 768 -> hidden -> 37, null for linear probe
+lr: 1e-4
+epochs: 2 # only need very few epochs
+print_freq: 100
+checkpoint_freq: 2500
+wandb_entity: <wandb_entity>
+wandb_project: <wandb_project>
+wandb_group: <wandb_group>
+wandb_notes: <wandb_notes>
+wandb_log_freq: 100
+save_dir: <checkpoint_dir_for_probe>
