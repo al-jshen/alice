@@ -1,6 +1,8 @@
 # Alice: An Interpretable Neural Architecture for Generalization in Substitution Ciphers
 
-Alice is a transformer-based neural network designed to solve cryptograms.
+![ALICE](aliceimg.png)
+
+Alice (an **A**rchitecture for **L**earning **I**nterpretable **C**ryptogram d**E**cipherment) is a transformer-based neural network designed to solve cryptograms.
 
 ## Installation
 
@@ -32,7 +34,7 @@ python alice/train.py --config configs/my_config.yaml
 
 ### Pretrained Models
 
-We release the checkpoints for various pretrained models in [`checkpoints/`](checkpoints/).
+We release the checkpoints for various pretrained models [at this link](https://users.flatironinstitute.org/~jshen/alice/).
 
 You will need to instantiate the model with the same configuration used during training.
 
