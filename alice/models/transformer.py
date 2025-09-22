@@ -4,6 +4,7 @@ from typing import Literal, Optional
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from einops import rearrange
 
 from .modules import (
     Attention,
@@ -198,6 +199,7 @@ class Transformer(nn.Module):
         sinkhorn_schedule: Literal["linear", "cosine", "constant"] = "constant",
         sinkhorn_decay_steps: int = 100_000,
         sinkhorn_min_tau: float = 0.1,
+        cross_n_head: Optional[int] = None,
         max_seq_len: int = 1024,
         rope_base: float = 10000.0,
         embedding_n_layer: int = 4,
@@ -252,6 +254,8 @@ class Transformer(nn.Module):
         self.sinkhorn_schedule = sinkhorn_schedule
         self.sinkhorn_decay_steps = sinkhorn_decay_steps
         self.sinkhorn_min_tau = sinkhorn_min_tau
+        self.cross_n_head = cross_n_head or 1  # 1 for backwards compatibility
+        self.cross_head_dim = dim // self.cross_n_head
 
         if self.sinkhorn_decoding:
             self.output_query = nn.Parameter(torch.randn(vocab_size, dim) / (dim**0.5))
@@ -304,7 +308,9 @@ class Transformer(nn.Module):
             for block in self.blocks:
                 x, attn = block(x, freqs_cis=freqs_cis, mask=mask, return_attn=True)
                 attn_weights.append(attn)
-            attn_weights = torch.stack(attn_weights, dim=0) # layer x batch x head x N x N
+            attn_weights = torch.stack(
+                attn_weights, dim=0
+            )  # layer x batch x head x N x N
         else:
             for block in self.blocks:
                 x = block(x, freqs_cis=freqs_cis, mask=mask)  # BxNxD floats
@@ -317,10 +323,29 @@ class Transformer(nn.Module):
             )  # pool embeddings by token ID, still BxNxD floats
 
         if self.sinkhorn_decoding:
-            query = self.output_query.unsqueeze(0).expand(x.shape[0], -1, -1)
+            # query = self.output_query.unsqueeze(0).expand(x.shape[0], -1, -1)
+            # x = F.scaled_dot_product_attention(
+            #     query, x, x, attn_mask=mask.squeeze(1) if mask is not None else None
+            # )  # squeeze to get rid of head dim
+
+            x = rearrange(
+                x, "b n (h d) -> b h n d", h=self.cross_n_head, d=self.cross_head_dim
+            )
+            query = (
+                rearrange(
+                    self.output_query,
+                    "v (h d) -> h v d",
+                    h=self.cross_n_head,
+                    d=self.cross_head_dim,
+                )
+                .unsqueeze(0)
+                .expand(x.shape[0], -1, -1, -1)
+            )
             x = F.scaled_dot_product_attention(
-                query, x, x, attn_mask=mask.squeeze(1) if mask is not None else None
+                query, x, x, attn_mask=mask
             )  # squeeze to get rid of head dim
+            x = rearrange(x, "b h v d -> b v (h d)")
+
             x = self.debed(x)  # BxVxV floats, log permutation matrix over vocab
 
             if self.training:
@@ -351,3 +376,20 @@ class Transformer(nn.Module):
         if return_permutation:
             outputs.append(P)
         return tuple(outputs) if len(outputs) > 1 else x
+
+    @torch.no_grad()
+    def get_activations(self, tok, mask=None):
+        x = self.embeddings(tok)  # BxNxD floats
+
+        self.freqs_cis = self.freqs_cis.to(
+            tok.device
+        )  # ensure freqs_cis is on the same device
+        freqs_cis = self.freqs_cis[: x.shape[1]]
+
+        activations = []
+        activations.append(x)
+        for block in self.blocks:
+            x = block(x, freqs_cis=freqs_cis, mask=mask)  # BxNxD floats
+            activations.append(x)
+
+        return activations  # (num_layers+1)xBxNxD floats
