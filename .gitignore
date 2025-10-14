@@ -170,7 +170,6 @@ logs/
 *.safetensors
 
 # Data files
-data/
 datasets/
 cache/
 .cache/
